@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.*;
 import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -67,7 +66,6 @@ public class StatisticsTest {
     }
 @Test
     public void topScorersReturnsCorrectly() {
-
         assertEquals(45,stats.topScorers(4).get(1).getGoals());
     }
     
