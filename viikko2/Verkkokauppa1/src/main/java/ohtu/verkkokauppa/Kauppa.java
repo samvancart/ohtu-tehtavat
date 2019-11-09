@@ -1,5 +1,9 @@
 package ohtu.verkkokauppa;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class Kauppa {
 
     private VarastoRajapinta vr;
@@ -8,7 +12,8 @@ public class Kauppa {
     private ViitegeneraattoriRajapinta vgr;
     private String kaupanTili;
 
-    public Kauppa(PankkiRajapinta pr,VarastoRajapinta vr,ViitegeneraattoriRajapinta vgr) {
+    @Autowired
+    public Kauppa(PankkiRajapinta pr, VarastoRajapinta vr, ViitegeneraattoriRajapinta vgr) {
         this.vr = vr;
         this.pr = pr;
         this.vgr = vgr;
@@ -20,13 +25,13 @@ public class Kauppa {
     }
 
     public void poistaKorista(int id) {
-        Tuote t = vr.haeTuote(id); 
+        Tuote t = vr.haeTuote(id);
         vr.palautaVarastoon(t);
     }
 
     public void lisaaKoriin(int id) {
-        if (vr.saldo(id)>0) {
-            Tuote t = vr.haeTuote(id);             
+        if (vr.saldo(id) > 0) {
+            Tuote t = vr.haeTuote(id);
             ostoskori.lisaa(t);
             vr.otaVarastosta(t);
         }
@@ -35,7 +40,7 @@ public class Kauppa {
     public boolean tilimaksu(String nimi, String tiliNumero) {
         int viite = vgr.uusi();
         int summa = ostoskori.hinta();
-        
+
         return pr.tilisiirto(nimi, viite, tiliNumero, kaupanTili, summa);
     }
 
