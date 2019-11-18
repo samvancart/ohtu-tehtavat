@@ -66,12 +66,6 @@ public class Stepdefs {
         logInWith(username, password);
     }
 
-    @Then("error message is given")
-    public void errorMessageIsGiven() {
-        pageHasContent("invalid username or password");
-        pageHasContent("Give your credentials to login");
-    }
-
     @Given("command new user is selected")
     public void commandNewUserIsSelected() {
         driver.get(baseUrl);
@@ -111,8 +105,34 @@ public class Stepdefs {
 
     @When("When  a valid username {string} and invalid password {string} and password confirmation {string} are entered")
     public void whenAValidUsernameAndInvalidPasswordAndPasswordConfirmationAreEntered(String username, String password, String passwordConfirmation) {
-         createNewWithConfirmation(username, password,passwordConfirmation);
+        createNewWithConfirmation(username, password, passwordConfirmation);
     }
+
+    @Given("user with username {string} with password {string} is successfully created")
+    public void userIsCreated(String username, String password) throws Throwable {
+        driver.get(baseUrl);
+        WebElement element = driver.findElement(By.linkText("register new user"));
+        element.click();
+        createNewWith(username, password);
+        logoutAfterCreatingUser();
+        loginIsSelected();
+    }
+
+    @When("username {string} and password {string} are entered")
+    public void usernameAndPasswordAreEntered(String username, String password) {
+        logInWith(username, password);
+    }
+
+    @Given("user with username {string} and password {string} is tried to be created")
+    public void userIsNotCreated(String username, String password) throws Throwable {
+        driver.get(baseUrl);
+        WebElement element = driver.findElement(By.linkText("register new user"));
+        element.click();
+        createNewWith(username, password);
+        element = driver.findElement(By.linkText("back to home"));
+        loginIsSelected();
+    }
+    
 
     @After
     public void tearDown() {
@@ -145,7 +165,8 @@ public class Stepdefs {
         element = driver.findElement(By.name("signup"));
         element.submit();
     }
-        private void createNewWithConfirmation(String username, String password,String passwordConfirmation) {
+
+    private void createNewWithConfirmation(String username, String password, String passwordConfirmation) {
         assertTrue(driver.getPageSource().contains("Create username and give password"));
         WebElement element = driver.findElement(By.name("username"));
         element.sendKeys(username);
@@ -155,5 +176,12 @@ public class Stepdefs {
         element.sendKeys(passwordConfirmation);
         element = driver.findElement(By.name("signup"));
         element.submit();
+    }
+
+    private void logoutAfterCreatingUser() {
+        WebElement element = driver.findElement(By.linkText("continue to application mainpage"));
+        element.click();
+        element = driver.findElement(By.linkText("logout"));
+        element.click();
     }
 }
