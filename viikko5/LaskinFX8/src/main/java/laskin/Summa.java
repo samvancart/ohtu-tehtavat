@@ -17,7 +17,6 @@ public class Summa extends Komento {
         this.nollaa = nollaa;
         this.undo = undo;
         this.sovellus = sovellus;
-
     }
 
     @Override
@@ -34,6 +33,9 @@ public class Summa extends Komento {
         syotekentta.setText("");
         tuloskentta.setText("" + laskunTulos);
 
+        sovellus.pushToJono();
+        System.out.println("Sovellus jono: "+sovellus.getJono().toString());
+
         if (laskunTulos == 0) {
             nollaa.disableProperty().set(true);
         } else {
@@ -44,7 +46,8 @@ public class Summa extends Komento {
 
     @Override
     void peru() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int luku = sovellus.getPeek();
+        tuloskentta.setText("" + luku);
     }
 
 }

@@ -26,13 +26,18 @@ public class Nollaa extends Komento {
 
         syotekentta.setText("");
         tuloskentta.setText("" + laskunTulos);
+
+        sovellus.pushToJono();
+        System.out.println("Sovellus jono: " + sovellus.getJono().toString());
+
         nollaa.disableProperty().set(true);
 
     }
 
     @Override
     void peru() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int luku = sovellus.getPeek();
+        tuloskentta.setText("" + luku);
     }
 
 }
